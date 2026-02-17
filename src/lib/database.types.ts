@@ -92,6 +92,25 @@ export type Database = {
   }
 }
 
+export type Payment = {
+  id: string
+  user_id: string
+  voucher_type_id: string
+  asaas_payment_id: string | null
+  asaas_customer_id: string | null
+  billing_type: "PIX" | "CREDIT_CARD"
+  value: number
+  status: "PENDING" | "AWAITING_PAYMENT" | "CONFIRMED" | "RECEIVED" | "FAILED" | "REFUNDED"
+  pix_encoded_image: string | null
+  pix_payload: string | null
+  pix_expiration_date: string | null
+  credit_card_token: string | null
+  voucher_id: string | null
+  asaas_webhook_data: Record<string, unknown> | null
+  created_at: string
+  updated_at: string
+}
+
 export type VoucherType = Database["public"]["Tables"]["voucher_types"]["Row"]
 export type Voucher = Database["public"]["Tables"]["vouchers"]["Row"]
 export type User = Database["public"]["Tables"]["users"]["Row"]

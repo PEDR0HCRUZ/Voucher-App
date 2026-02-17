@@ -13,6 +13,7 @@ export async function GET() {
       id: user.id,
       login_id: user.login_id,
       name: user.name,
+      email: user.email,
       role: user.role,
     },
   })

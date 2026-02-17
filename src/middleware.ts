@@ -6,10 +6,10 @@ const JWT_SECRET = new TextEncoder().encode(
 )
 const COOKIE_NAME = "voucher_auth"
 
-const PUBLIC_ROUTES = ["/login", "/registrar", "/api/auth"]
+const PUBLIC_ROUTES = ["/login", "/registrar", "/api/auth", "/api/webhooks"]
 
 // Routes that require specific roles
-const CLIENTE_ROUTES = ["/vouchers", "/voucher", "/meus-vouchers"]
+const CLIENTE_ROUTES = ["/vouchers", "/voucher", "/meus-vouchers", "/checkout", "/api/payments"]
 const VALIDADOR_ROUTES = ["/validar"]
 
 export async function middleware(request: NextRequest) {

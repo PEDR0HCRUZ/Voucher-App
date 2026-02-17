@@ -38,28 +38,9 @@ export default function VouchersPage() {
     fetchVoucherTypes()
   }, [])
 
-  async function handleBuy(voucherTypeId: string) {
+  function handleBuy(voucherTypeId: string) {
     setBuying(voucherTypeId)
-    try {
-      const response = await fetch("/api/vouchers", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ voucher_type_id: voucherTypeId }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || "Erro ao gerar voucher")
-      }
-
-      router.push(`/voucher/${data.code}`)
-    } catch (error) {
-      console.error("Error buying voucher:", error)
-      alert("Erro ao gerar voucher. Tente novamente.")
-    } finally {
-      setBuying(null)
-    }
+    router.push(`/checkout?type=${voucherTypeId}`)
   }
 
   if (loading) {
