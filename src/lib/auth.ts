@@ -75,11 +75,11 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     .from("users")
     .select("id, login_id, name, email, role")
     .eq("id", payload.sub)
-    .single()
+    .single<AuthUser>()
 
   if (!user) return null
 
-  return user as AuthUser
+  return user
 }
 
 export function setAuthCookie(token: string) {

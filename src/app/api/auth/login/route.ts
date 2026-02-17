@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { supabase } from "@/lib/supabase"
 import { comparePassword, createToken, setAuthCookie } from "@/lib/auth"
+import type { User } from "@/lib/database.types"
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,9 +18,9 @@ export async function POST(request: NextRequest) {
     // Find user by login_id
     const { data: user, error } = await supabase
       .from("users")
-      .select("*")
+      .select("id, login_id, name, email, password_hash, role")
       .eq("login_id", login_id.toUpperCase().trim())
-      .single()
+      .single<User>()
 
     if (error || !user) {
       return NextResponse.json(
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
       login_id: user.login_id,
       name: user.name,
       email: user.email,
-      role: user.role,
+      role: user.role as "cliente" | "validador",
     })
 
     setAuthCookie(token)
