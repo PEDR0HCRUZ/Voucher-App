@@ -71,12 +71,13 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
   if (!payload) return null
 
   // Fetch fresh user data from DB
-  const { data: user } = await supabase
+  const { data } = await supabase
     .from("users")
     .select("id, login_id, name, email, role")
     .eq("id", payload.sub)
-    .single<AuthUser>()
+    .single()
 
+  const user = data as AuthUser | null
   if (!user) return null
 
   return user

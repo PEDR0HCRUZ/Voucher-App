@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { supabase } from "@/lib/supabase"
 import { comparePassword, createToken, setAuthCookie } from "@/lib/auth"
-import type { User } from "@/lib/database.types"
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,11 +15,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Find user by login_id
-    const { data: user, error } = await supabase
+    const { data, error } = await supabase
       .from("users")
       .select("id, login_id, name, email, password_hash, role")
       .eq("login_id", login_id.toUpperCase().trim())
-      .single<User>()
+      .single()
+
+    const user = data as { id: string; login_id: string; name: string; email: string; password_hash: string; role: string } | null
 
     if (error || !user) {
       return NextResponse.json(

@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       .from("users")
       .select("id")
       .eq("email", email.toLowerCase())
-      .single<{ id: string }>()
+      .single()
 
     if (existingUser) {
       return NextResponse.json(
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
         .from("users")
         .select("id")
         .eq("login_id", candidate)
-        .single<{ id: string }>()
+        .single()
 
       if (!existing) {
         loginId = candidate
