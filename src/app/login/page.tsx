@@ -34,20 +34,19 @@ export default function LoginPage() {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Entrar</CardTitle>
           <CardDescription>
-            Use seu ID de acesso e senha para entrar.
+            Use seu email ou ID de acesso e senha para entrar.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="space-y-2">
-              <Label htmlFor="loginId">ID de Acesso</Label>
+              <Label htmlFor="loginId">Email ou ID de Acesso</Label>
               <Input
                 id="loginId"
                 value={loginId}
-                onChange={(e) => setLoginId(e.target.value.toUpperCase())}
-                placeholder="Ex: A3K9M2"
-                className="font-mono text-lg tracking-[0.2em] text-center"
-                maxLength={6}
+                onChange={(e) => setLoginId(e.target.value)}
+                placeholder="seu@email.com ou A3K9M2"
+                className="text-center"
                 required
                 autoFocus
               />

@@ -67,6 +67,7 @@ function CheckoutContent() {
   // General
   const [error, setError] = useState("")
   const [polling, setPolling] = useState(false)
+  const [simulating, setSimulating] = useState(false)
 
   useEffect(() => {
     async function fetchVoucherType() {
@@ -218,6 +219,30 @@ function CheckoutContent() {
       setError("Erro ao processar pagamento")
     } finally {
       setCardLoading(false)
+    }
+  }
+
+  async function simulatePayment() {
+    if (!pixPaymentId) return
+    setSimulating(true)
+    setError("")
+    try {
+      const res = await fetch(`/api/payments/${pixPaymentId}/simulate`, {
+        method: "POST",
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error || "Erro ao simular")
+        return
+      }
+      if (data.voucher_code) {
+        setPolling(false)
+        router.push(`/voucher/${data.voucher_code}`)
+      }
+    } catch {
+      setError("Erro ao simular pagamento")
+    } finally {
+      setSimulating(false)
     }
   }
 
@@ -489,6 +514,21 @@ function CheckoutContent() {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" />
               Aguardando pagamento...
+            </div>
+
+            {/* Simulate button (sandbox only) */}
+            <div className="w-full pt-2 border-t">
+              <p className="text-xs text-muted-foreground text-center mb-2">
+                Ambiente de teste (sandbox)
+              </p>
+              <Button
+                variant="secondary"
+                className="w-full"
+                onClick={simulatePayment}
+                disabled={simulating}
+              >
+                {simulating ? "Simulando..." : "Simular Pagamento (Teste)"}
+              </Button>
             </div>
           </CardContent>
         </Card>
